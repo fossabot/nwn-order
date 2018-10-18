@@ -1,0 +1,30 @@
+# Project files #
+###################
+cache
+server
+homedir
+installdir
+resman
+config.yml
+*.ncs
+
+# Other #
+###################
+tmp
+NWN
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+docker/server.env
+DOCKERGUIDE.md
+INTRODUCTION.md
+README.md
+SETUP.md
+README.md

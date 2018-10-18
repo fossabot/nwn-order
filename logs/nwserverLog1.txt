@@ -1,0 +1,37 @@
+[Tue Oct 16 20:28:52] Loading Module: pubsub_test
+Our public address as seen by the masterserver: 71.238.137.193:5121
+[Tue Oct 16 20:32:08] Loading Module: pubsub_test
+Our public address as seen by the masterserver: 71.238.137.193:5121
+[Tue Oct 16 21:01:33] Loading Module: pubsub_test
+Our public address as seen by the masterserver: 71.238.137.193:5121
+[Tue Oct 16 21:25:19] Loading Module: pubsub_test
+Our public address as seen by the masterserver: 71.238.137.193:5121
+[Tue Oct 16 23:02:18] Loading Module: pubsub_test
+Our public address as seen by the masterserver: 71.238.137.193:5121
+[Tue Oct 16 23:16:30] Loading Module: pubsub_test
+Our public address as seen by the masterserver: 71.238.137.193:5121
+[Tue Oct 16 23:19:25] Loading Module: pubsub_test
+Our public address as seen by the masterserver: 71.238.137.193:5121
+[Tue Oct 16 23:31:19] Loading Module: pubsub_test
+Our public address as seen by the masterserver: 71.238.137.193:5121
+[Tue Oct 16 23:38:07] Loading Module: pubsub_test
+Our public address as seen by the masterserver: 71.238.137.193:5121
+[Wed Oct 17 06:49:06] Loading Module: pubsub_test
+Our public address as seen by the masterserver: 71.238.137.193:5121
+[Wed Oct 17 06:50:36] Loading Module: pubsub_test
+Our public address as seen by the masterserver: 71.238.137.193:5121
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test
+Pubsub Event: channel=test message=test

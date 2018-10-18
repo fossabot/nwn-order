@@ -1,0 +1,17 @@
+{
+    "external": {
+        "github_webhook_secret": "test"
+    },
+    "webserver": {
+        "server_port": "5252"
+    },
+    "redis": {
+        "redis_port":"6379",
+        "nwnxee_pubsub_channel":"nwnxee",
+        "module_pubsub_channel":"module"
+    },
+    "docker": {
+        "nwserver_container_name":"nwnxee-server",
+        "nwserver_port":"5121"
+    }
+}

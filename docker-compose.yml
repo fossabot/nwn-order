@@ -1,0 +1,38 @@
+version: '3'
+services:
+  nwn-go:
+    hostname: nwn-go
+    image: golang:1.11.1-stretch
+    volumes:
+      - ${PWD-.}/go:/go/nwn-go
+      - ${PWD-.}/src:/src
+    working_dir: /go/nwn-go
+    command: bash -c "go mod download && go run *.go"
+  redis:
+    image: healthcheck/redis:latest
+    command: ["redis-server", "--appendonly", "yes"]
+    hostname: redis
+    volumes:
+      - ${PWD-.}/redis:/data
+    restart: unless-stopped
+  nwnxee-server:
+    hostname: nwnxee-server
+    image: nwnxee/unified:latest
+    env_file: ${PWD-.}/config/nwserver.env
+    stdin_open: true
+    tty: true
+    links:
+      - "redis:redis"
+      - "nwn-go:nwn-go"
+    depends_on:
+      - nwn-go
+      - redis
+    volumes:
+      - ${PWD-.}/logs:/nwn/run/logs.0
+      - ${PWD-.}/server/:/nwn/home
+    restart: always
+    ports:
+      - "5121:5121/udp"
+
+
+  
