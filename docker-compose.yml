@@ -1,8 +1,9 @@
 version: '3'
 services:
-  nwn-go:
-    hostname: nwn-go
+  nwn-order:
+    hostname: nwn-order
     image: golang:1.11.1-stretch
+    env_file: ${PWD-.}/config/nwnorder.env
     volumes:
       - ${PWD-.}/go:/go/nwn-go
       - ${PWD-.}/src:/src
@@ -10,7 +11,7 @@ services:
     command: bash -c "go mod download && go run *.go"
   redis:
     image: healthcheck/redis:latest
-    command: ["redis-server", "--appendonly", "yes"]
+    command: ["redis-server", "--appendonly", "no"]
     hostname: redis
     volumes:
       - ${PWD-.}/redis:/data
@@ -23,13 +24,14 @@ services:
     tty: true
     links:
       - "redis:redis"
-      - "nwn-go:nwn-go"
+      - "nwn-order:nwn-order"
     depends_on:
-      - nwn-go
+      - nwn-order
       - redis
     volumes:
       - ${PWD-.}/logs:/nwn/run/logs.0
       - ${PWD-.}/server/:/nwn/home
+      - ${PWD-.}/logs:/nwn/data/bin/linux-x86/logs.0
     restart: always
     ports:
       - "5121:5121/udp"
