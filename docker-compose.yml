@@ -9,6 +9,8 @@ services:
       - ${PWD-.}/src:/src
     working_dir: /go/nwn-go
     command: bash -c "go mod download && go run *.go"
+    ports:
+      - "5750:5750/tcp"
   redis:
     image: healthcheck/redis:latest
     command: ["redis-server", "--appendonly", "no"]
@@ -35,6 +37,3 @@ services:
     restart: always
     ports:
       - "5121:5121/udp"
-
-
-  
