@@ -1,2 +1,10 @@
 # nwn-order
-Tool to wrap nwserver and docker and give CI tools.
+<<<<<<< HEAD
+Go program written to help nwserver persistent worlds.
+
+## things I want to do with this.
+    ### Completed:
+        Longer heartbeat triggers.
+        UUID Generation
+
+    ### In Progress:
