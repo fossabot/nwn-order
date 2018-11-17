@@ -1,6 +1,8 @@
 # nwn-order
 Go program written to enhance nwnxee persistent worlds with an external go program.
 
+![Image of Order](https://github.com/Urothis/nwn-order/blob/master/Screenshot.png)
+
 > required software
 > - Docker
 > - Docker compose
