@@ -23,7 +23,7 @@ If you are still running into issues feel free to stop by the discord
 
 ## Project goals
 This project started as a way for me to setup a full ci deployment.
-This has evolved after playing with everything I can do with this.
+This has evolved into a fun way to see what we can do.
 Community involvement is appreciated.   
     
 >### Completed
