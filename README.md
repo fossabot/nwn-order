@@ -71,17 +71,16 @@ Tickers will need to be enabled or disabled depending on your needs.
 Default actions for heartbeat tickers are defined in order_heartbeat.nss
 
 ### CI/Github
-This requires alittle bit of setup to function.
-
 Requirements:
 have a webhook setup for the repo you want to recieve alerts from.
 https://developer.github.com/webhooks/creating/
 
-When the docker-compose does go up, order will spit out an external facing IP and port. 
+Address can be found via docker-compose going up, order will spit out an external facing IP and port.
+Append /webhook to that address and you should be good to recieve webhooks barring your server network setup.
 
 You will need to go into gitub and enable the webhook.
-
 Example:
+
 ![Image of Github](https://github.com/Urothis/nwn-order/blob/master/documentation/Github_Screenshot.png)
 
 So when you deliver a webhook, order will accept the webhook and trigger the 
