@@ -1,7 +1,7 @@
 # nwn-order
 Go program written to enhance nwnxee persistent worlds with an external go program.
 
-![Image of Order](https://github.com/Urothis/nwn-order/blob/master/Screenshot.png)
+![Image of Order](https://github.com/Urothis/nwn-order/blob/master/tree/documentation/Screenshot.png)
 
 > required software
 > - Docker
@@ -42,3 +42,47 @@ Community involvement is appreciated.
 - Patreon integration
 - Discord bot integration
 - Whatever else the community suggests
+
+
+## Usage
+### UUID
+This function should be passed the player objet only.
+It will return the assigned UUID to the player.
+
+Internal scripts attach this uuid to the player tag.
+> OrderGetUUIDPlayer(oPC)
+Should return the players unique ID
+
+Example return:
+> 6fc7438a87d42b2dec552b4fb81b75a2
+
+### Heartbeat
+Heartbeat functionality can be enabled via config/nworder.env
+
+>NWN_ORDER_HB_VERBOSE=
+
+Setting to true will disply more logs for heartbeat
+
+>NWN_ORDER_HB_ONE_MINUTE=true
+
+Tickers will need to be enabled or disabled depending on your needs.
+
+Default actions for heartbeat tickers are defined in order_heartbeat.nss
+
+##CI
+### Github
+This requires alittle bit of setup to function.
+
+Requirements:
+have a webhook setup for the repo you want to recieve alerts from.
+https://developer.github.com/webhooks/creating/
+
+When the docker-compose does go up, order will spit out an external facing IP and port. 
+
+You will need to go into gitub and enable the webhook.
+Example:
+![Image of Github](https://github.com/Urothis/nwn-order/blob/master/tree/documentation/Github_Screenshot.png)
+
+So when you deliver a webhook, order will accept the webhook and trigger the 
+>OrderGithub();
+function inside of order_github.nss

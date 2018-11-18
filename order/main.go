@@ -142,7 +142,7 @@ func githubWebhook(w http.ResponseWriter, r *http.Request) {
 	case *github.PushEvent:
 		t := time.Now()
 		msg := ("I [" + t.Format("15:04:05") + "] [NWN_Order] Webhook Event: channel=innwserver message=repoupdate | " + *e.Sender.Login + " made a commit to module repo")
-		go sendPubsub(msg, "innwserver", "repoupdate")
+		go sendPubsub(msg, "github", "commit")
 
 	default:
 		log.Printf("Only push events supported, unknown webhook event type %s\n", github.WebHookType(r))
@@ -172,11 +172,12 @@ func webserver() {
 }
 
 func main() {
-	fmt.Println(`Order has started`)
+             
+	fmt.Println("ORDER")						 
 
 	// start pubsub
 	go startPubsub()
-	fmt.Println(`Pubsub started`)
+	fmt.Println(`Pubsub subscriptions started`)
 
 	// start webhook reciever
 	go webserver()
@@ -195,43 +196,43 @@ func main() {
 	// start the heartbeat timers
 	if cfg.HbOneMinute == true {
 		fmt.Println("heartbeat enabled:  1 minute")
-		gocron.Every(1).Second().Do(heartbeatWebhook, "1m")
+		gocron.Every(1).Minute().Do(heartbeatWebhook, "1")
 	} else {
 		fmt.Println("heartbeat disabled: 1 minute")
 	}
 	if cfg.HbFiveMinute == true {
 		fmt.Println("heartbeat enabled:  5 minutes")
-		gocron.Every(5).Minutes().Do(heartbeatWebhook, "5m")
+		gocron.Every(5).Minutes().Do(heartbeatWebhook, "5")
 	} else {
 		fmt.Println("heartbeat disabled: 5 minutes")
 	}
 	if cfg.HbThirtyMinute == true {
 		fmt.Println("heartbeat enabled:  30 minutes")
-		gocron.Every(30).Minutes().Do(heartbeatWebhook, "30m")
+		gocron.Every(30).Minutes().Do(heartbeatWebhook, "30")
 	} else {
 		fmt.Println("heartbeat disabled: 30 minutes")
 	}
 	if cfg.HbOneHour == true {
 		fmt.Println("heartbeat enabled:  1 hour")
-		gocron.Every(1).Hour().Do(heartbeatWebhook, "1m")
+		gocron.Every(1).Hour().Do(heartbeatWebhook, "60")
 	} else {
 		fmt.Println("heartbeat disabled: 1 hour")
 	}
 	if cfg.HbSixHour == true {
 		fmt.Println("heartbeat enabled:  6 hours")
-		gocron.Every(6).Hours().Do(heartbeatWebhook, "1m")
+		gocron.Every(6).Hours().Do(heartbeatWebhook, "360")
 	} else {
 		fmt.Println("heartbeat disabled: 6 hours")
 	}
 	if cfg.HbTwelveHour == true {
 		fmt.Println("heartbeat enabled:  12 hours")
-		gocron.Every(12).Hours().Do(heartbeatWebhook, "1m")
+		gocron.Every(12).Hours().Do(heartbeatWebhook, "720")
 	} else {
 		fmt.Println("heartbeat disabled: 12 hours")
 	}
 	if cfg.HbTwentyfourHour == true {
 		fmt.Println("heartbeat enabled:  24 hours")
-		gocron.Every(24).Hours().Do(heartbeatWebhook, "1m")
+		gocron.Every(24).Hours().Do(heartbeatWebhook, "1440")
 	} else {
 		fmt.Println("heartbeat disabled: 24 hours")
 	}
