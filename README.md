@@ -12,6 +12,12 @@ Go program written to enhance nwnxee persistent worlds with an external go progr
 > - NWNXEE
 
 ## Setup help
+This software is still early in development so the setup readme is a WIP. 
+
+- Copy the /order folder to your current root folder.
+- Compare the env files out of /config to your current docker setup
+- Compare docker-compose.yml and add the order service to your current docker-compose file
+
 The two best places to get started using this software:
 > https://github.com/Urothis/nwnxee-template
 
