@@ -1,15 +1,15 @@
 # nwn-order
 Go program written to enhance nwnxee persistent worlds with an external go program.
 
-![Image of Order](https://github.com/Urothis/nwn-order/blob/master/tree/documentation/Screenshot.png)
+![Image of Order](https://github.com/Urothis/nwn-order/blob/master/documentation/Screenshot.png)
 
 > required software
 > - Docker
 > - Docker compose
 >
 > Module requirements
-> - Neverwinter NightsEE
-> - NWNXEE
+> - [Neverwinter Nights enhanced edition]:https://www.beamdog.com/products/neverwinter-nights-enhanced-edition
+> - [NWNXEE]:https://nwnx.io/
 
 ## Setup help
 This software is still early in development so the setup readme is a WIP. 
@@ -51,6 +51,7 @@ It will return the assigned UUID to the player.
 
 Internal scripts attach this uuid to the player tag.
 > OrderGetUUIDPlayer(oPC)
+
 Should return the players unique ID
 
 Example return:
@@ -69,8 +70,7 @@ Tickers will need to be enabled or disabled depending on your needs.
 
 Default actions for heartbeat tickers are defined in order_heartbeat.nss
 
-##CI
-### Github
+### CI/Github
 This requires alittle bit of setup to function.
 
 Requirements:
@@ -80,9 +80,10 @@ https://developer.github.com/webhooks/creating/
 When the docker-compose does go up, order will spit out an external facing IP and port. 
 
 You will need to go into gitub and enable the webhook.
+
 Example:
-![Image of Github](https://github.com/Urothis/nwn-order/blob/master/tree/documentation/Github_Screenshot.png)
+![Image of Github](https://github.com/Urothis/nwn-order/blob/master/documentation/Github_Screenshot.png)
 
 So when you deliver a webhook, order will accept the webhook and trigger the 
->OrderGithub();
+"OrderGithub();"
 function inside of order_github.nss
