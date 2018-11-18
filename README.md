@@ -44,7 +44,7 @@ Community involvement is appreciated.
 - Whatever else the community suggests
 
 
-## Usage
+## NWSCRIPT
 ### UUID
 This function should be passed the player objet only.
 It will return the assigned UUID to the player.
