@@ -8,8 +8,8 @@ Go program written to enhance nwnxee persistent worlds with an external go progr
 > - Docker compose
 >
 > Module requirements
-> - [Neverwinter Nights enhanced edition]:https://www.beamdog.com/products/neverwinter-nights-enhanced-edition
-> - [NWNXEE]:https://nwnx.io/
+> - [Neverwinter Nights enhanced edition]https://www.beamdog.com/products/neverwinter-nights-enhanced-edition
+> - [NWNXEE]https://nwnx.io/
 
 ## Setup help
 This software is still early in development so the setup readme is a WIP. 
