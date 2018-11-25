@@ -6,12 +6,15 @@ RUN apt update \
     && cd nwn-order \
     && go mod download \
     && go build -o ./bin/order \
-    && mv bin/* /usr/local/bin/
+    && mv bin/order /usr/local/bin/
 
 FROM ubuntu:latest
 LABEL maintainer "urothis@gmail.com"
 # copy go
-COPY --from=nwn-order-builder /usr/local/bin/ /usr/local/bin/
-
+COPY --from=nwn-order-builder /usr/local/bin/order /usr/local/bin/order
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get clean \
+    && chmod +x ./usr/local/bin/order
 # run order-cli
 ENTRYPOINT [ "order" ]
