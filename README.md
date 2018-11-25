@@ -21,14 +21,36 @@ version: '3'
 services:
   nwn-order:
     hostname: nwn-order
-    image: golang:1.11.1-stretch
+    image: urothis/nwn-order:latest
     env_file: ${PWD-.}/config/nwnorder.env
-    volumes:
-      - ${PWD-.}/order:/go/order
-    working_dir: /go/order
-    command: bash -c "go mod download && go run *.go"
+    restart: always
     ports:
       - "5750:5750/tcp"
+  redis:
+    hostname: redis
+    image: healthcheck/redis:latest
+    command: ["redis-server", "--appendonly", "no"]
+    hostname: redis
+    volumes:
+      - ${PWD-.}/redis:/data
+    restart: always
+  nwnxee-server:
+    hostname: nwnxee-server
+    image: nwnxee/unified:latest
+    env_file: ${PWD-.}/config/nwserver.env
+    stdin_open: true
+    tty: true
+    links:
+      - "redis:redis"
+    depends_on:
+      - redis
+    volumes:
+      - ${PWD-.}/logs:/nwn/run/logs.0
+      - ${PWD-.}/server/:/nwn/home
+      - ${PWD-.}/logs:/nwn/data/bin/linux-x86/logs.0
+    restart: always
+    ports:
+      - "5121:5121/udp"
 ```
  
 If you are still running into issues feel free to stop by the discord
