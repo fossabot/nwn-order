@@ -5,19 +5,19 @@ Go program written to enhance nwnxee persistent worlds with an external go progr
 
 ![Image of Order](https://github.com/Urothis/nwn-order/blob/master/docs/Screenshot.png)
 
-> required software
-> - Docker
-> - Docker compose
->
-> Module requirements
-> - [Neverwinter Nights enhanced edition]https://www.beamdog.com/products/neverwinter-nights-enhanced-edition
-> - [NWNXEE]https://nwnx.io/
+### required software
+- Docker
+- Docker compose
+
+### Module requirements:
+- [Neverwinter Nights enhanced edition](https://www.beamdog.com/products/neverwinter-nights-enhanced-edition)
+- [NWNXEE](https://nwnx.io/)
 
 ## Setup 
 For a starting docker compose template
 > https://github.com/Urothis/nwnxee-template
 
-# Docker Compose
+### Docker Compose
 ```
 version: '3'
 services:
