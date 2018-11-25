@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net"
 	"net/http"
 	"time"
 
@@ -173,7 +174,19 @@ func webserver() {
 
 func main() {
 
-	fmt.Println("ORDER")
+	t := time.Now()
+	bootmsg := ("I [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Order has Started")
+	log.Println(bootmsg)
+
+	conn, err := net.Dial("tcp", "redis:6379")
+	for err != nil {
+		trds := time.Now()
+		msgtrds := ("I [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | 5 second sleep")
+		log.Println(msgtrds)
+		time.Sleep(5 * time.Second)
+	}
+	conn.Close()
+	log.Println("Redis: Connected")
 
 	// start pubsub
 	go startPubsub()
@@ -184,10 +197,11 @@ func main() {
 	fmt.Println(`Webserver started`)
 
 	// initial heartbeat
+	// initial uuid
 	go uuidGeneration()
 
 	cfg := config{}
-	err := env.Parse(&cfg)
+	err = env.Parse(&cfg)
 
 	if err != nil {
 		fmt.Printf("%+v\n", err)
