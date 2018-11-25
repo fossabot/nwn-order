@@ -11,17 +11,25 @@ Go program written to enhance nwnxee persistent worlds with an external go progr
 > - [Neverwinter Nights enhanced edition]https://www.beamdog.com/products/neverwinter-nights-enhanced-edition
 > - [NWNXEE]https://nwnx.io/
 
-## Setup help
-This software is still early in development so the setup readme is a WIP. 
-
-- Copy the /order folder to your current root folder.
-- Compare the env files out of /config to your current docker setup
-- Compare docker-compose.yml and add the order service to your current docker-compose file
-
-The two best places to get started using this software:
+## Setup 
+For a starting docker compose template
 > https://github.com/Urothis/nwnxee-template
 
-Has a full docker structure with compose file to power it all. 
+# Docker Compose
+```
+version: '3'
+services:
+  nwn-order:
+    hostname: nwn-order
+    image: golang:1.11.1-stretch
+    env_file: ${PWD-.}/config/nwnorder.env
+    volumes:
+      - ${PWD-.}/order:/go/order
+    working_dir: /go/order
+    command: bash -c "go mod download && go run *.go"
+    ports:
+      - "5750:5750/tcp"
+```
  
 If you are still running into issues feel free to stop by the discord
 
