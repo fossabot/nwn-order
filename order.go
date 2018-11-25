@@ -1,4 +1,4 @@
-package main
+package order
 
 import (
 	"crypto/rand"
@@ -172,8 +172,8 @@ func webserver() {
 }
 
 func main() {
-             
-	fmt.Println("ORDER")						 
+
+	fmt.Println("ORDER")
 
 	// start pubsub
 	go startPubsub()
