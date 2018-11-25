@@ -1,4 +1,6 @@
 # nwn-order
+[![](https://images.microbadger.com/badges/image/urothis/nwn-order.svg)](https://microbadger.com/images/urothis/nwn-order "Get your own image badge on microbadger.com")
+
 Go program written to enhance nwnxee persistent worlds with an external go program.
 
 ![Image of Order](https://github.com/Urothis/nwn-order/blob/master/docs/Screenshot.png)
