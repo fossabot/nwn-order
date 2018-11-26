@@ -18,7 +18,6 @@ import (
 
 type config struct {
 	RedisPort        string `env:"NWN_ORDER_REDIS_PORT" envDefault:"6379"`
-	OrderModuleName  string `env:"NWN_ORDER_MODULE_NAME" envDefault:"my_module"`
 	OrderPort        string `env:"NWN_ORDER_PORT" envDefault:"5750"`
 	HbVerbose        bool   `env:"NWN_ORDER_HB_VERBOSE" envDefault:"true"`
 	HbOneMinute      bool   `env:"NWN_ORDER_HB_ONE_MINUTE" envDefault:"true"`
@@ -178,23 +177,23 @@ func main() {
 	bootmsg := ("I [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Order has Started")
 	log.Println(bootmsg)
 
-	conn, err := net.Dial("tcp", "redis:6379")
+	conn, err := net.Dial("udp", "redis:6379")
 	for err != nil {
 		trds := time.Now()
-		msgtrds := ("I [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | 5 second sleep")
-		log.Println(msgtrds)
+		log.Println("I [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | 5 second sleep")
 		time.Sleep(5 * time.Second)
 	}
 	conn.Close()
-	log.Println("Redis: Connected")
+	trdsend := time.Now()
+	log.Println("I [" + trdsend.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis connected")
 
 	// start pubsub
 	go startPubsub()
-	fmt.Println(`Pubsub subscriptions started`)
+	fmt.Println("I [" + trdsend.Format("15:04:05") + "] [NWN_Order] Boot Event: Pubsub started")
 
 	// start webhook reciever
 	go webserver()
-	fmt.Println(`Webserver started`)
+	fmt.Println("I [" + trdsend.Format("15:04:05") + "] [NWN_Order] Boot Event: Webserver started")
 
 	// initial heartbeat
 	// initial uuid
