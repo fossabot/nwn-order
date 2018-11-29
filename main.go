@@ -182,7 +182,7 @@ func main() {
 		trds := time.Now()
 		log.Println("I [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | 5 second sleep")
 		time.Sleep(5 * time.Second)
-		conn, err = net.Dial("udp", "redis:6379")
+		conn, _ = net.Dial("udp", "redis:6379")
 	}
 	conn.Close()
 	trdsend := time.Now()
