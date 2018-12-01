@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"net"
 	"net/http"
 	"time"
+	"strconv"
 
 	"github.com/caarlos0/env"
 	"github.com/glendc/go-external-ip"
@@ -172,29 +174,33 @@ func webserver() {
 }
 
 func main() {
-
 	t := time.Now()
-	bootmsg := ("I [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Order has Started")
-	log.Println(bootmsg)
+	log.Println("I [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Order has Started")
 
 	conn, err := net.Dial("udp", "redis:6379")
-	for err != nil {
+	for retry := 1; err != nil; retry++ {
+		retry = retry
 		trds := time.Now()
-		log.Println("I [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | 5 second sleep")
+		s := strconv.Itoa(retry)
+		log.Println("I [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | Retry attempt: "+ s +" | 5 second sleep")
+		if retry > 4 {
+			log.Println("I [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | Exiting")
+			os.Exit(1)
+		}
 		time.Sleep(5 * time.Second)
-		conn, _ = net.Dial("udp", "redis:6379")
 	}
 	conn.Close()
-	trdsend := time.Now()
-	log.Println("I [" + trdsend.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis connected")
+
+	t = time.Now()
+	log.Println("I [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis connected")
 
 	// start pubsub
 	go startPubsub()
-	fmt.Println("I [" + trdsend.Format("15:04:05") + "] [NWN_Order] Boot Event: Pubsub started")
+	fmt.Println("I [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Pubsub started")
 
 	// start webhook reciever
 	go webserver()
-	fmt.Println("I [" + trdsend.Format("15:04:05") + "] [NWN_Order] Boot Event: Webserver started")
+	fmt.Println("I [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Webserver started")
 
 	// initial heartbeat
 	// initial uuid
