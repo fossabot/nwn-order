@@ -174,6 +174,7 @@ func webserver() {
 }
 
 func main() {
+	time.Sleep(15 * time.Second)
 	t := time.Now()
 	log.Println("I [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Order has Started")
 
