@@ -1,4 +1,4 @@
-#include "order_main"
+#include "nwnx_redis"
 
 // -- return or assign and return the oPC uuid.
 string OrderGetUUIDPlayer(object oPC);
@@ -15,7 +15,8 @@ string OrderGetUUIDPlayer(object oPC)
         if (nUuidInProgress != 1)
         {
             // get prepared uuid
-            string sUUID = NWNX_Redis_GET("system:uuid");
+            int nUUID = NWNX_Redis_GET("system:uuid");
+            string sUUID = NWNX_Redis_GetResultAsString(nUUID);
             WriteTimestampedLogEntry(sUUID);
             SetTag(oPC, sUUID);
             // delete the key after we get the value set to sUUID
@@ -47,7 +48,8 @@ string OrderGetUUID(){
     object oMod = GetModule();
 
     // get cached uuid
-    string sUUID = NWNX_Redis_GET("system:uuid");
+    int nUUID = NWNX_Redis_GET("system:uuid");
+    string sUUID = NWNX_Redis_GetResultAsString(nUUID);
 
     // delete the key after we get the value set to sUUID
     NWNX_Redis_DEL("system:uuid"); 

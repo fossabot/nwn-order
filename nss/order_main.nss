@@ -1,30 +1,31 @@
-#include "nwnx_redis"
 #include "nwnx_redis_ps"
 
-#include "order_return"
-#include "order_github"
-#include "order_heartbeat"
+#include "order_inc"
 
 void main()
 {
-  // -- this is triggered via nwnxee redis pubusb. Do not trigger elsewhere.
   struct NWNX_Redis_PubSubMessageData data = NWNX_Redis_GetPubSubMessageData();
-  
-  // -- return function triggers
-  if(data.channel == "return")
+
+  Log(data.channel, "1");
+  int pubusbType = StringToInt(data.channel);
+
+  if (data.channel == "input")
   {
-      OrderReturn(data.message);
+    OrderReturn(data.message);
+  } 
+
+  else if (data.channel == "github")
+  {
+    OrderGithub(data.message);
   }
 
-  // -- return function for a github webhook being accepted.
-  if(data.channel == "github")
+  else if (data.channel == "heartbeat")
   {
-      OrderGithub(data.message);
-  }
+    OrderHeartbeat(data.message);
+  } 
 
-  // -- heartbeat functions
-  if(data.channel == "heartbeat")
+  else
   {
-      OrderHeartbeat(data.message);
+    Log("Error, channel type not recognized.","1");
   }
 }

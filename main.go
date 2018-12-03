@@ -53,6 +53,7 @@ func startPubsub() {
 		"heartbeat",
 		"input",
 		"debug",
+		"github",
 	)
 	for {
 		msg, _ := pubSub.ReceiveMessage()
@@ -180,7 +181,6 @@ func main() {
 
 	conn, err := net.Dial("udp", "redis:6379")
 	for retry := 1; err != nil; retry++ {
-		retry = retry
 		trds := time.Now()
 		s := strconv.Itoa(retry)
 		log.Println("I [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | Retry attempt: "+ s +" | 5 second sleep")
