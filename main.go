@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 	"net"
 	"net/http"
-	"time"
+	"os"
 	"strconv"
+	"time"
 
 	"github.com/caarlos0/env"
 	"github.com/glendc/go-external-ip"
@@ -122,7 +122,7 @@ func sendPubsub(LogMessage string, PubsubChannel string, PubsubMessage string) {
 
 func heartbeatWebhook(ticker string) {
 	t := time.Now()
-	msg := ("I [" + t.Format("15:04:05") + "] [NWN_Order] Pubsub Event: channel=heartbeat message=" + ticker)
+	msg := ("O [" + t.Format("15:04:05") + "] [NWN_Order] Pubsub Event: channel=heartbeat message=" + ticker)
 	sendPubsub(msg, "heartbeat", ticker)
 }
 
@@ -144,7 +144,7 @@ func githubWebhook(w http.ResponseWriter, r *http.Request) {
 
 	case *github.PushEvent:
 		t := time.Now()
-		msg := ("I [" + t.Format("15:04:05") + "] [NWN_Order] Webhook Event: channel=innwserver message=repoupdate | " + *e.Sender.Login + " made a commit to module repo")
+		msg := ("O [" + t.Format("15:04:05") + "] [NWN_Order] Webhook Event: channel=innwserver message=repoupdate | " + *e.Sender.Login + " made a commit to module repo")
 		go sendPubsub(msg, "github", "commit")
 
 	default:
@@ -168,40 +168,54 @@ func webserver() {
 	consensus := externalip.DefaultConsensus(nil, nil)
 	ip, _ := consensus.ExternalIP()
 	http.HandleFunc("/webhook", githubWebhook)
-	fmt.Println("webserver started with external IP of " + ip.String() + ":" + cfg.OrderPort + ". webhooks need to be sent to /webhook")
+	t := time.Now()
+	fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: webserver started with external IP of " + ip.String() + ":" + cfg.OrderPort + ". webhooks need to be sent to /webhook")
 
 	http.HandleFunc("/", webpage)
 	log.Fatal(http.ListenAndServe(":"+cfg.OrderPort, nil))
 }
 
 func main() {
-	time.Sleep(15 * time.Second)
 	t := time.Now()
-	log.Println("I [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Order has Started")
+	log.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Order has Started")
 
 	conn, err := net.Dial("udp", "redis:6379")
 	for retry := 1; err != nil; retry++ {
 		trds := time.Now()
 		s := strconv.Itoa(retry)
-		log.Println("I [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | Retry attempt: "+ s +" | 5 second sleep")
+		log.Println("O [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | Retry attempt: " + s + " | 5 second sleep")
 		if retry > 4 {
-			log.Println("I [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | Exiting")
+			log.Println("O [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | Exiting")
 			os.Exit(1)
 		}
 		time.Sleep(5 * time.Second)
 	}
 	conn.Close()
-
 	t = time.Now()
-	log.Println("I [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis connected")
+	log.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis connected")
+
+	conn, err = net.Dial("udp", "nwserver:5121")
+	for retry := 1; err != nil; retry++ {
+		trds := time.Now()
+		s := strconv.Itoa(retry)
+		log.Println("O [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: nwserver not started | Retry attempt: " + s + " | 5 second sleep")
+		if retry > 4 {
+			log.Println("O [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: nwserver not started | Exiting")
+			os.Exit(1)
+		}
+		time.Sleep(5 * time.Second)
+	}
+	conn.Close()
+	t = time.Now()
+	log.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: nwserver connected")
 
 	// start pubsub
 	go startPubsub()
-	fmt.Println("I [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Pubsub started")
+	fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Pubsub started")
 
 	// start webhook reciever
 	go webserver()
-	fmt.Println("I [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Webserver started")
+	fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Webserver started")
 
 	// initial heartbeat
 	// initial uuid
@@ -216,51 +230,51 @@ func main() {
 
 	// start the heartbeat timers
 	if cfg.HbOneMinute == true {
-		fmt.Println("heartbeat enabled:  1 minute")
+		fmt.Println("0 [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: heartbeat enabled:  1 minute")
 		gocron.Every(1).Minute().Do(heartbeatWebhook, "1")
 	} else {
-		fmt.Println("heartbeat disabled: 1 minute")
+		fmt.Println("0 [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: heartbeat disabled: 1 minute")
 	}
 	if cfg.HbFiveMinute == true {
-		fmt.Println("heartbeat enabled:  5 minutes")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: heartbeat enabled:  5 minutes")
 		gocron.Every(5).Minutes().Do(heartbeatWebhook, "5")
 	} else {
-		fmt.Println("heartbeat disabled: 5 minutes")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: heartbeat disabled: 5 minutes")
 	}
 	if cfg.HbThirtyMinute == true {
-		fmt.Println("heartbeat enabled:  30 minutes")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: heartbeat enabled:  30 minutes")
 		gocron.Every(30).Minutes().Do(heartbeatWebhook, "30")
 	} else {
-		fmt.Println("heartbeat disabled: 30 minutes")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: heartbeat disabled: 30 minutes")
 	}
 	if cfg.HbOneHour == true {
-		fmt.Println("heartbeat enabled:  1 hour")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: heartbeat enabled:  1 hour")
 		gocron.Every(1).Hour().Do(heartbeatWebhook, "60")
 	} else {
-		fmt.Println("heartbeat disabled: 1 hour")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: heartbeat disabled: 1 hour")
 	}
 	if cfg.HbSixHour == true {
-		fmt.Println("heartbeat enabled:  6 hours")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: heartbeat enabled:  6 hours")
 		gocron.Every(6).Hours().Do(heartbeatWebhook, "360")
 	} else {
-		fmt.Println("heartbeat disabled: 6 hours")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: heartbeat disabled: 6 hours")
 	}
 	if cfg.HbTwelveHour == true {
-		fmt.Println("heartbeat enabled:  12 hours")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: heartbeat enabled:  12 hours")
 		gocron.Every(12).Hours().Do(heartbeatWebhook, "720")
 	} else {
-		fmt.Println("heartbeat disabled: 12 hours")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: heartbeat disabled: 12 hours")
 	}
 	if cfg.HbTwentyfourHour == true {
-		fmt.Println("heartbeat enabled:  24 hours")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: heartbeat enabled:  24 hours")
 		gocron.Every(24).Hours().Do(heartbeatWebhook, "1440")
 	} else {
-		fmt.Println("heartbeat disabled: 24 hours")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event:heartbeat disabled: 24 hours")
 	}
 	if cfg.HbVerbose == true {
-		fmt.Println("Verbose mode: on")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Verbose mode: on")
 	} else {
-		fmt.Println("Verbose mode: off")
+		fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Verbose mode: off")
 	}
 
 	<-gocron.Start()
