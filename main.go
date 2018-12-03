@@ -94,7 +94,7 @@ func uuidGeneration() {
 
 	pub := client.Publish("output", "uuid")
 	if err = pub.Err(); err != nil {
-		log.Print("PublishString() error", err)
+		fmt.Print("PublishString() error", err)
 	}
 }
 
@@ -129,14 +129,14 @@ func heartbeatWebhook(ticker string) {
 func githubWebhook(w http.ResponseWriter, r *http.Request) {
 	payload, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Printf("error validating request body: err=%s\n", err)
+		fmt.Printf("error validating request body: err=%s\n", err)
 		return
 	}
 	defer r.Body.Close()
 
 	event, err := github.ParseWebHook(github.WebHookType(r), payload)
 	if err != nil {
-		log.Printf("could not parse webhook: err=%s\n", err)
+		fmt.Printf("could not parse webhook: err=%s\n", err)
 		return
 	}
 
@@ -148,7 +148,7 @@ func githubWebhook(w http.ResponseWriter, r *http.Request) {
 		go sendPubsub(msg, "github", "commit")
 
 	default:
-		log.Printf("Only push events supported, unknown webhook event type %s\n", github.WebHookType(r))
+		fmt.Printf("Only push events supported, unknown webhook event type %s\n", github.WebHookType(r))
 		return
 	}
 }
@@ -183,31 +183,16 @@ func main() {
 	for retry := 1; err != nil; retry++ {
 		trds := time.Now()
 		s := strconv.Itoa(retry)
-		log.Println("O [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | Retry attempt: " + s + " | 5 second sleep")
+		fmt.Println("O [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | Retry attempt: " + s + " | 5 second sleep")
 		if retry > 4 {
-			log.Println("O [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | Exiting")
+			fmt.Println("O [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis not connected | Exiting")
 			os.Exit(1)
 		}
 		time.Sleep(5 * time.Second)
 	}
 	conn.Close()
 	t = time.Now()
-	log.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis connected")
-
-	conn, err = net.Dial("udp", "nwserver:5121")
-	for retry := 1; err != nil; retry++ {
-		trds := time.Now()
-		s := strconv.Itoa(retry)
-		log.Println("O [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: nwserver not started | Retry attempt: " + s + " | 5 second sleep")
-		if retry > 4 {
-			log.Println("O [" + trds.Format("15:04:05") + "] [NWN_Order] Boot Event: nwserver not started | Exiting")
-			os.Exit(1)
-		}
-		time.Sleep(5 * time.Second)
-	}
-	conn.Close()
-	t = time.Now()
-	log.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: nwserver connected")
+	fmt.Println("O [" + t.Format("15:04:05") + "] [NWN_Order] Boot Event: Redis connected")
 
 	// start pubsub
 	go startPubsub()
