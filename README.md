@@ -4,6 +4,7 @@
 Go program written to enhance nwnxee persistent worlds with an external go program.
 
 ![Image of Order](https://github.com/Urothis/nwn-order/blob/master/docs/Screenshot.png)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FUrothis%2Fnwn-order.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FUrothis%2Fnwn-order?ref=badge_shield)
 
 ### required software
 - Docker
@@ -119,3 +120,7 @@ Example:
 So when you deliver a webhook, order will accept the webhook and trigger the 
 "OrderGithub();"
 function inside of order_github.nss
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FUrothis%2Fnwn-order.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FUrothis%2Fnwn-order?ref=badge_large)
